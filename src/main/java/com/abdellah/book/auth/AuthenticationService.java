@@ -1,12 +1,16 @@
 package com.abdellah.book.auth;
 
 
+import com.abdellah.book.email.EmailService;
+import com.abdellah.book.email.EmailTemplateName;
 import com.abdellah.book.role.repository.RoleRepository;
 import com.abdellah.book.user.Repository.TokenRepository;
 import com.abdellah.book.user.Repository.UserRepository;
 import com.abdellah.book.user.domain.Token;
 import com.abdellah.book.user.domain.User;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +27,13 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
+    private final EmailService emailService;
+
+    @Value("${spring.application.mailing.frontend.activation-url}")
+    private String activationCode;
 
 
-
-    public void register(RegistrationRequest request) {
+    public void register(RegistrationRequest request) throws MessagingException {
         var userRole = roleRepository.findByName("USER")
                 .orElseThrow(() -> new IllegalStateException("User was not initialized."));
 
@@ -44,8 +51,17 @@ public class AuthenticationService {
 
     }
 
-    private void sendValidationEmail(User user) {
+    private void sendValidationEmail(User user) throws MessagingException {
         var newToken = generateAndSaveActivationToken(user);
+        emailService.sendMail(
+                user.getEmail(),
+                user.getFullName(),
+                EmailTemplateName.ACTIVATE_ACCOUNT,
+                activationCode,
+                newToken,
+                "Account activation"
+
+        );
     }
 
     private String generateAndSaveActivationToken(User user) {

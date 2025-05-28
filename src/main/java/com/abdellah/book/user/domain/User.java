@@ -14,6 +14,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -58,7 +59,7 @@ public class User implements UserDetails, Principal {
         return this.roles
                 .stream()
                 .map(r -> new SimpleGrantedAuthority(r.getName()))
-                .toList();
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -91,7 +92,7 @@ public class User implements UserDetails, Principal {
         return enabled;
     }
 
-    private String getFullName() {
+    public String getFullName() {
         return firstName + ' ' + lastName;
     }
 }

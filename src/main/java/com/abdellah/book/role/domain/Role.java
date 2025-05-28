@@ -42,4 +42,10 @@ public class Role {
     @LastModifiedDate
     @Column(insertable = false)
     private LocalDate lastModifiedDate;
+
+
+    // Ajoutez manuellement le getter
+    public String getName() {
+        return name;
+    }
 }
