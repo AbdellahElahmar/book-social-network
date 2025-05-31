@@ -21,7 +21,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class JwtService {
 
     private final TokenRepository tokenRepository;
@@ -31,12 +30,16 @@ public class JwtService {
     @Value("${spring.application.security.jwt.secret-key}")
     private String secretKey;
 
+    public JwtService(TokenRepository tokenRepository) {
+        this.tokenRepository = tokenRepository;
+    }
+
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
 
     }
 
-    private String generateToken(HashMap<String,Object> claims, UserDetails userDetails) {
+    public String generateToken(HashMap<String,Object> claims, UserDetails userDetails) {
         return buildToken(claims, userDetails, jwtExpiration);
     }
 

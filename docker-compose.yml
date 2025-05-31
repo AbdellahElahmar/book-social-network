@@ -1,11 +1,11 @@
 services:
   postgres:
-    container_name: postgres-sql-bsn
+    container_name: postgres-sql-bsn2
     image: postgres
     environment:
-      POSTGRS_USER: username
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: book_social_network
+      - POSTGRES_USER=username
+      - POSTGRES_DB=book_social_network
+      - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
       - 5432:5432
   mail-dev:

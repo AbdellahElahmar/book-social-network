@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -21,8 +22,8 @@ public class Token {
 
     private String token;
     private LocalDate createdAt;
-    private LocalDate expiresAt;
-    private LocalDate validatedAt;
+    private LocalDateTime expiresAt;
+    private LocalDateTime validatedAt;
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
