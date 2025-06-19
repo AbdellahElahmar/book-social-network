@@ -15,8 +15,6 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "role")
 @EntityListeners(AuditingEntityListener.class)
@@ -27,6 +25,8 @@ public class Role {
     @GeneratedValue
     private Long id;
 
+    // Ajoutez manuellement le getter
+    @Getter
     @Column(unique = true)
     private String name;
 
@@ -44,8 +44,4 @@ public class Role {
     private LocalDate lastModifiedDate;
 
 
-    // Ajoutez manuellement le getter
-    public String getName() {
-        return name;
-    }
 }

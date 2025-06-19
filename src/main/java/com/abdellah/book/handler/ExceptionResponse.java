@@ -9,9 +9,6 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ExceptionResponse {
 
     private Integer businessErrorCode;

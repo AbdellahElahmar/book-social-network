@@ -45,15 +45,14 @@ public class AuthenticationService {
         var userRole = roleRepository.findByName("USER")
                 .orElseThrow(() -> new IllegalStateException("User's role was not initialized."));
 
-        User user = User.builder()
-                .firstName(request.getFirstname())
-                .lastName(request.getLastname())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .accountLocked(false)
-                .enabled(false)
-                .roles(List.of(userRole))
-                .build();
+        User user = new User();
+                user.setFirstName(request.getFirstname());
+                user.setLastName(request.getLastname());
+                user.setEmail(request.getEmail());
+                user.setPassword(passwordEncoder.encode(request.getPassword()));
+                user.setAccountLocked(false);
+                user.setEnabled(false);
+                user.setRoles(List.of(userRole));
         userRepository.save(user);
         sendValidationEmail(user);
 
@@ -74,12 +73,11 @@ public class AuthenticationService {
 
     private String generateAndSaveActivationToken(User user) {
         String generatedToken = generateActivationToken(6);
-        var token = Token.builder()
-                .token(generatedToken)
-                .createdAt(LocalDate.from(LocalDateTime.now()))
-                .expiresAt(LocalDateTime.now().plusMinutes(15))
-                .user(user)
-                .build();
+        Token token = new Token();
+        token.setToken(generatedToken);
+        token.setCreatedAt(LocalDate.from(LocalDateTime.now()));
+        token.setExpiresAt(LocalDateTime.now().plusMinutes(15));
+        token.setUser(user);
         tokenRepository.save(token);
         return generatedToken;
     }
@@ -109,9 +107,9 @@ public class AuthenticationService {
         claims.put("fullname", user.getFullName());
         var jwtToken = jwtService.generateToken(claims, user);
 
-        return AythenticationResponse.builder()
-                .token(jwtToken).build();
-
+        AythenticationResponse response = new AythenticationResponse();
+        response.setToken(jwtToken);
+        return response;
     }
 
     @QuartzTransactionManager

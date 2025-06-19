@@ -2,6 +2,7 @@ package com.abdellah.book.handler;
 
 
 
+//import com.abdellah.book.exception.OperationNotPermittedException;
 import com.abdellah.book.exception.ActivationTokenException;
 import com.abdellah.book.exception.OperationNotPermittedException;
 import jakarta.mail.MessagingException;
