@@ -8,9 +8,30 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
       - 5432:5432
+    networks:
+     - spring_demo
   mail-dev:
     container_name: mail-dev-bsn
     image: maildev/maildev
     ports:
       - 1080:1080
       - 1025:1025
+    networks:
+     - spring_demo
+  keycloak:
+    container_name: keycloak-bsn
+    image: quay.io/keycloak/keycloak:26.2.0
+    ports:
+      - 9090:8080
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    networks:
+     - spring_demo
+    command:
+      - "start-dev"
+
+
+networks:
+  spring_demo:
+    driver: bridge
